@@ -9,10 +9,10 @@ import { ElNotification } from "element-plus";
 import { ref } from "vue";
 import AxiosFunctions from '../src/utils/api.js'
 
-import { analysis_api, sovits_api } from "../src/utils/api.js";
+import { analysisApi, sovitsApi } from "../src/utils/api.js";
 
 const bitRate = 16
-const sampleRate = 44100
+const sampleRate = 24000
 
 export default {
   data() {
@@ -23,6 +23,8 @@ export default {
       isPlaying: false,
       playedLength: 0,
       playedPercentage: ref(0),
+      analysisApi: analysisApi,
+      sovitsApi: sovitsApi    
     }
   },
 
@@ -70,44 +72,43 @@ export default {
       });
     },
 
-    upload(url) { // upload to server
-      let blob = this.recBlob
-      let fileName = "voice.wav"
-      let wavFile = new File([blob], fileName)
+    upload(url) {
+      let blob = this.recBlob;
+      if (!blob) {
+        ElNotification({
+          title: "Failed",
+          message: "还没有录音！",
+          type: "error"
+        });
+        return;
+      }
+      let fileName = "voice.wav";
+      let wavFile = new File([blob], fileName);
+      console.log("Uploading to URL:", url); // Add this line for debugging
       AxiosFunctions.methods.update(wavFile, url, sampleRate)
         .then((response) => {
-          console.log(response)
-          if (url === analysis_api) {
-            this.result_analysis = response.data
+          console.log("Response received:", response);
+          if (url === this.analysis_api) {
+            this.result_analysis = response.data;
           } else {
-            this.result_audio = response.data
+            this.result_audio = response.data;
           }
           ElNotification({
             title: "Success",
             message: "完成",
             type: "success"
-          })
-        }).catch((response) => {
+          });
+        })
+        .catch((error) => {
           ElNotification({
             title: "Failed",
             message: "网络错误",
             type: "error"
-          })
-          console.log(response)
-        })
-
-      // 将原始录音文件下载到本地
-      // let downLoadUrl = window.URL.createObjectURL(
-      //     new Blob([blob])
-      // );
-      // let a = document.createElement("a");
-      // a.download = fileName;
-      // a.href = downLoadUrl;
-      // a.style.display = "none";
-      // document.body.appendChild(a);
-      // a.click();
-      // a.remove();
+          });
+          console.log("Error occurred:", error);
+        });
     },
+
 
     play(sound) {
       this.isPlaying = true
@@ -228,8 +229,8 @@ export default {
         <el-space>
           <el-button @click="recPlay" type="info"> 本地试听 </el-button>
           <el-button-group>
-            <el-button @click="upload(1)" type="primary"> 情感分析 </el-button>
-            <el-button @click="upload(0)" type="primary"> 开始变声 </el-button>
+            <el-button @click="upload(analysisApi)" type="primary"> 情感分析 </el-button>
+            <el-button @click="upload(sovitsApi)" type="primary"> 开始变声 </el-button>
           </el-button-group>
           <el-button @click="getAnalysis" type="success"> 情感分析结果 </el-button>
           <el-button @click="resultPlay" type="success"> 变声结果 </el-button>
