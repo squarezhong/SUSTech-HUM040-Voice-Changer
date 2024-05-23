@@ -5,9 +5,11 @@
 import Recorder from "recorder-core";
 import 'recorder-core/src/engine/wav'
 import 'recorder-core/src/extensions/waveview'
-import {ElNotification} from "element-plus";
-import {ref} from "vue";
+import { ElNotification } from "element-plus";
+import { ref } from "vue";
 import AxiosFunctions from '../src/utils/api.js'
+
+import { analysis_api, sovits_api } from "../src/utils/api.js";
 
 const bitRate = 16
 const sampleRate = 44100
@@ -36,7 +38,7 @@ export default {
       });
       this.rec.open(() => {
         if (this.$refs.recwave) {
-          this.wave = Recorder.WaveView({elem: this.$refs.recwave})
+          this.wave = Recorder.WaveView({ elem: this.$refs.recwave })
         }
       }, (msg, isUserNotAllow) => {
         if (isUserNotAllow) {
@@ -68,27 +70,31 @@ export default {
       });
     },
 
-    upload(f) { // upload to server
+    upload(url) { // upload to server
       let blob = this.recBlob
       let fileName = "voice.wav"
       let wavFile = new File([blob], fileName)
-      AxiosFunctions.methods.update(wavFile, f, sampleRate)
-          .then((response) => {
-            console.log(response)
-            this.result = response.data
-            ElNotification({
-              title: "Success",
-              message: "完成",
-              type: "success"
-            })
-          }).catch((response) => {
-            ElNotification({
-              title: "Failed",
-              message: "网络错误",
-              type: "error"
-            })
-            console.log(response)
+      AxiosFunctions.methods.update(wavFile, url, sampleRate)
+        .then((response) => {
+          console.log(response)
+          if (url === analysis_api) {
+            this.result_analysis = response.data
+          } else {
+            this.result_audio = response.data
+          }
+          ElNotification({
+            title: "Success",
+            message: "完成",
+            type: "success"
           })
+        }).catch((response) => {
+          ElNotification({
+            title: "Failed",
+            message: "网络错误",
+            type: "error"
+          })
+          console.log(response)
+        })
 
       // 将原始录音文件下载到本地
       // let downLoadUrl = window.URL.createObjectURL(
@@ -130,9 +136,26 @@ export default {
       }
     },
 
+    // show the analysis result (text)
+    getAnalysis() {
+      if (this.result_analysis) {
+        ElNotification({
+          title: "Analysis Result",
+          message: this.result_analysis,
+          type: "success"
+        })
+      } else {
+        ElNotification({
+          title: "Failed",
+          message: "还没有情感分析结果！",
+          type: "error"
+        })
+      }
+    },
+
     resultPlay() {
-      if (this.result) {
-        let blob = new Blob([this.result], {type: 'audio/wav'})
+      if (this.result_audio) {
+        let blob = new Blob([this.result_audio], { type: 'audio/wav' })
         console.log(blob)
         this.play(blob)
 
@@ -205,17 +228,18 @@ export default {
         <el-space>
           <el-button @click="recPlay" type="info"> 本地试听 </el-button>
           <el-button-group>
-            <el-button @click="upload(1)" type="primary"> 开始变声 f1 = 1 </el-button>
-            <el-button @click="upload(0)" type="primary"> 开始变声 f1 = 0 </el-button>
+            <el-button @click="upload(1)" type="primary"> 情感分析 </el-button>
+            <el-button @click="upload(0)" type="primary"> 开始变声 </el-button>
           </el-button-group>
+          <el-button @click="getAnalysis" type="success"> 情感分析结果 </el-button>
           <el-button @click="resultPlay" type="success"> 变声结果 </el-button>
         </el-space>
       </div>
       <div class="items">
-        <el-text> {{this.soundLength ? '录音时长：' + this.soundLength / 1000 + ' s' : ''}} </el-text>
+        <el-text> {{ this.soundLength ? '录音时长：' + this.soundLength / 1000 + ' s' : '' }} </el-text>
       </div>
       <div class="items">
-        <progress :value="this.playedPercentage" :max="100"/>
+        <progress :value="this.playedPercentage" :max="100" />
       </div>
     </div>
   </div>
@@ -227,6 +251,7 @@ export default {
   height: 100vh;
   width: 100vw;
 }
+
 .container {
   position: absolute;
   top: 50%;
@@ -234,6 +259,7 @@ export default {
   transform: translate(-50%, -50%);
   text-align: center;
 }
+
 .items {
   padding-bottom: 35px;
 }

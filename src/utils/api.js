@@ -1,21 +1,15 @@
 import axios from "axios";
 
-const base_api = 'http://10.16.165.147:10009';
+export const analysis_api = 'http://localhost:14400/upload?type=analysis';
+export const sovits_api = 'http://localhost:14400/upload?type=conversion';
 
 export default {
     methods: {
-        update(file, f, sampleRate) {
+        update(file, url, sampleRate) {
             const formData = new FormData();
             formData.append('sample', file)
-            formData.append('fPitchChange', '0')
             formData.append('sampleRate', sampleRate)
-            formData.append('sSpeakId', 'alice')
-            return axios.post(base_api + '/voice', formData, {
-                responseType: 'blob',
-                params: {
-                    f0: f
-                }
-            })
+            return axios.post(url, formData, { responseType: 'blob' })
         }
     }
 }
