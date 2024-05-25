@@ -9,6 +9,9 @@ You can record your voice, then do emotion analysis and voice conversion.
 ## Usage
 
 ### Frontend
+
+Make sure you have installed Node.js and npm.
+
 ```bash
 cd frontend
 npm install
@@ -24,6 +27,8 @@ Visit the website shown in the console.
 
 ### Backend
 ```bash
+# if you don't have flask and flask-cors
+pip install flask flask-cors
 cd backend
 # change it to the exact file name
 python example.py
@@ -32,6 +37,14 @@ python example.py
 ## Development
 
 Fork this repository, add your code, and submit a pull request.
+
+### Emotion Analysis
+
+[Datasets](https://www.kaggle.com/datasets/uwrfkaggler/ravdess-emotional-speech-audio/data)
+
+To keep the project neat, extracted dataset is not included in this repository. You can download it from the link above.
+
+### GPT-SoVITS Voice Conversion
 
 ## Contributors
 

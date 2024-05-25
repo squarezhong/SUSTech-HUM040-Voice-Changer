@@ -2,6 +2,8 @@ from flask import Flask, request, send_file, jsonify
 from flask_cors import CORS
 import io
 
+import emotion_analysis
+
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
@@ -12,7 +14,9 @@ def upload():
 
     # process audio file (emotion analysis or voice conversion)
     if request.args.get('type') == 'analysis':
+        print("emotion analysis")
         result = perform_emotion_analysis(file, sample_rate)
+        print(result)
         return jsonify(result)
     else:
         print("voice conversion")
@@ -24,8 +28,8 @@ def upload():
         )
 
 def perform_emotion_analysis(file, sample_rate):
-    # TODO: implement emotion analysis logic here
-    result = {"emotion": "happy", "confidence": 0.98}
+    predicted_emotion = emotion_analysis.predict_emotion(file)
+    result = {"emotion": predicted_emotion}
     return result
 
 def perform_voice_conversion(file, sample_rate):
