@@ -211,10 +211,10 @@ export default {
   <div class="page">
     <div class="container">
       <div class="items">
-        <h1> sovits 音色转换器 </h1>
+        <h1> 情感分析与 SoVITS 音色转换 </h1>
       </div>
       <div class="items">
-        <h4> 《中文信息处理》 课程小组 </h4>
+        <h4> 《中文信息处理》第三小组 </h4>
       </div>
       <div class="items">
         <el-space>
@@ -230,10 +230,10 @@ export default {
           <el-button @click="recPlay" type="info"> 本地试听 </el-button>
           <el-button-group>
             <el-button @click="upload(analysisApi)" type="primary"> 情感分析 </el-button>
-            <el-button @click="upload(sovitsApi)" type="primary"> 开始变声 </el-button>
+            <el-button @click="upload(sovitsApi)" type="primary"> 音色转换 </el-button>
           </el-button-group>
           <el-button @click="getAnalysis" type="success"> 情感分析结果 </el-button>
-          <el-button @click="resultPlay" type="success"> 变声结果 </el-button>
+          <el-button @click="resultPlay" type="success"> 转换结果 </el-button>
         </el-space>
       </div>
       <div class="items">
