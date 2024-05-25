@@ -3,3 +3,5 @@
 
 # ignore __pycache__ directories
 **/__pycache__/
+**/GPT-SoVITS-VC/
+backend/output.wav
