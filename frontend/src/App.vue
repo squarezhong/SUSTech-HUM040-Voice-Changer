@@ -88,8 +88,8 @@ export default {
       AxiosFunctions.methods.update(wavFile, url, sampleRate)
         .then((response) => {
           console.log("Response received:", response);
-          if (url === this.analysis_api) {
-            this.result_analysis = response.data;
+          if (url === this.analysisApi) {
+            this.result_analysis = response;
           } else {
             this.result_audio = response.data;
           }

@@ -1,3 +1,5 @@
 **/.DS_Store
 .vscode
 
+# ignore __pycache__ directories
+**/__pycache__/

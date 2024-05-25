@@ -9,15 +9,28 @@ export default {
             const formData = new FormData();
             formData.append('sample', file);
             formData.append('sampleRate', sampleRate);
-            return axios.post(url, formData, { responseType: 'blob' })
-                .then(response => {
-                    console.log("Response:", response);
-                    return response;
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    throw error;
-                });
+            if (url === analysisApi) {
+                return axios.post(url, formData, { responseType: 'json' })  // Ensure responseType is 'json'
+                    .then(response => {
+                        console.log("Response:", response.data);  // Log the response data
+                        return response.data;  // Return the response data
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        throw error;
+                    });
+            }
+            else {
+                return axios.post(url, formData, { responseType: 'blob' })
+                    .then(response => {
+                        console.log("Response:", response);
+                        return response;
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        throw error;
+                    });
+            }
         }
     }
 }
