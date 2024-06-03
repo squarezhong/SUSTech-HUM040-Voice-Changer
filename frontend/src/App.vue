@@ -214,7 +214,7 @@ export default {
         <h1> 情感分析与 SoVITS 音色转换 </h1>
       </div>
       <div class="items">
-        <h4> 《中文信息处理》第三小组 </h4>
+        <h4> 钟吴子正 12112613 </h4>
       </div>
       <div class="items">
         <el-space>
