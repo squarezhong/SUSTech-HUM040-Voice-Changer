@@ -1,5 +1,7 @@
 # SUSTech-HUM040-Voice-Changer
 
+[English](README.md) | [简体中文](README_cn.md)
+
 ## Introduction
 
 Github: [squarezhong/SUSTech-HUM040-Voice-Changer](https://github.com/squarezhong/SUSTech-HUM040-Voice-Changer)
