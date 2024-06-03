@@ -10,6 +10,8 @@ Github: [squarezhong/SUSTech-HUM040-Voice-Changer](https://github.com/squarezhon
 
 你可以录制自己的声音，然后进行情感分析和音色转换。
 
+![frontend](frontend.png)
+
 ### 情感分析
 - 模型: [xmj2002/hubert-base-ch-speech-emotion-recognition](https://huggingface.co/xmj2002/hubert-base-ch-speech-emotion-recognition)
 

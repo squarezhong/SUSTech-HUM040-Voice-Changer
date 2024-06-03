@@ -10,6 +10,8 @@ This is a project for SUSTech HUM040 (Chinese Information Processing).
 
 You can record your voice, then do emotion analysis and voice conversion.
 
+![frontend](frontend.png)
+
 ### Emotion analysis
 - Model: [xmj2002/hubert-base-ch-speech-emotion-recognition](https://huggingface.co/xmj2002/hubert-base-ch-speech-emotion-recognition)
 
